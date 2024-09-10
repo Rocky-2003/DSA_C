@@ -8,7 +8,7 @@ void main(){
   int n,i;
   printf("Enter the no. of Elements\n");
   scanf("%d", &n);
-  arr = (int *)malloc(sizeof(int) * n);
+  arr = (int  *)malloc(n*sizeof(int) );
 
   printf("Memeory Address\n");
   for ( i = 0; i < n; i++){
