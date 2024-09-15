@@ -11,7 +11,7 @@ struct Student
 };
 
 int main(){
-  struct Student a;
+  struct Student a; 
 
   a.marks = 200;
   a.rollNo = 22;
