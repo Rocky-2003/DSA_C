@@ -147,15 +147,55 @@ void insertAt()
     newNode->next = headNode;
     headNode = newNode;
   }
-  if (position == totalNodes + 1)
+  // if (position == totalNodes + 1)
+  // {
+  //   while (tempHeadNode->next != NULL)
+  //   {
+  //     tempHeadNode = tempHeadNode->next;
+  //   }
+  //   tempHeadNode->next = newNode;
+  //   newNode->prev = tempHeadNode;
+  //   return;
+  // }
+
+  int currentPosition = 1;
+  while (position - 1 > currentPosition)
   {
-    while (tempHeadNode->next != NULL)
-    {
-      tempHeadNode = tempHeadNode->next;
-    }
+    tempHeadNode = tempHeadNode->next;
+    currentPosition++;
+  }
+  if (position > totalNodes)
+  {
     tempHeadNode->next = newNode;
     newNode->prev = tempHeadNode;
-    return; 
+  }
+  else
+  {
+    newNode->next = tempHeadNode->next;
+    newNode->prev = tempHeadNode;
+    tempHeadNode->next->prev = newNode;
+    tempHeadNode->next = newNode;
+  }
+}
+
+void deleteNode()
+{
+  int position;
+  int totalNodes = countNodes();
+  struct Node *tempHeadNode = headNode;
+  printf("Enter the Node position you want to delete:");
+  scanf("%d", &position);
+
+  if (position <= 0 || position > totalNodes)
+  {
+    printf("Invalid Position");
+  }
+
+  if (position == 1)
+  {
+    headNode = tempHeadNode->next;
+    headNode->prev = NULL;
+    return;
   }
 
   int currentPosition = 1;
@@ -164,18 +204,33 @@ void insertAt()
     tempHeadNode = tempHeadNode->next;
     currentPosition++;
   }
-
-  newNode->next = tempHeadNode->next;
-  newNode->prev = tempHeadNode;
-  tempHeadNode->next->prev = newNode;
-  tempHeadNode->next = newNode;
+  if (position == totalNodes)
+  {
+    struct Node *nodeToDelete = tempHeadNode->next;
+    tempHeadNode->next = NULL;
+    free(nodeToDelete);
+    nodeToDelete = NULL;
+    return;
+  }
+  else
+  {
+    struct Node *nodeToDelete = tempHeadNode->next;
+    tempHeadNode->next->next->prev = tempHeadNode;
+    tempHeadNode->next = tempHeadNode->next->next;
+    free(nodeToDelete);
+    nodeToDelete = NULL;
+    return;
+  }
 }
 
 int main()
 {
 
   addLast();
-  insertAt();
+  // insertAt();
+  printList();
+  deleteNode();
+
   printList();
   // printReverse();
 }

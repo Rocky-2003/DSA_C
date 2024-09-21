@@ -197,55 +197,53 @@ void update()
 int main()
 {
 
-  // int ch;
+  int ch;
 
-  // while (1)
-  // {
-  //   printf("\n 1. Add Node First");
-  //   printf("\n 2. Add Node Last");
-  //   printf("\n 3. Insert Node at");
-  //   printf("\n 4. Delete Node at");
-  //   printf("\n 5. update Node at");
-  //   printf("\n 6. Print Nodes");
-  //   printf("\n 7. Count Nodes");
-  //   printf("\n 8. Exit\n");
-  //   printf("Enter you option: ");
-  //   scanf("%d", &ch);
+  while (1)
+  {
+    printf("\n 1. Add Node First");
+    printf("\n 2. Add Node Last");
+    printf("\n 3. Insert Node at");
+    printf("\n 4. Delete Node at");
+    printf("\n 5. update Node at");
+    printf("\n 6. Print Nodes");
+    printf("\n 7. Count Nodes");
+    printf("\n 8. Exit\n");
+    printf("Enter you option: ");
+    scanf("%d", &ch);
 
-  //   switch (ch)
-  //   {
-  //   case 1:
-  //     addFirst();
-  //     break;
-  //   case 2:
-  //     addLast();
-  //     break;
-  //   case 3:
-  //     insertAt();
-  //     break;
-  //   case 4:
-  //     deleteNode();
-  //     break;
-  //   case 5:
-  //     update();
-  //     break;
-  //   case 6:
-  //     printElements();
-  //   case 7:
-  //     printf("%d", countLength());
-  //     break;
-  //   case 8:
-  //     return 0;
-  //     break;
+    switch (ch)
+    {
+    case 1:
+      addFirst();
+      break;
+    case 2:
+      addLast();
+      break;
+    case 3:
+      insertAt();
+      break;
+    case 4:
+      deleteNode();
+      break;
+    case 5:
+      update();
+      break;
+    case 6:
+      printElements();
+    case 7:
+      printf("%d", countLength());
+      break;
+    case 8:
+      return 0;
+      break;
 
-  //   default:
-  //     printf("Invalid Input");
-  //     break;
-  //   }
-  // }
-  addFirst();
-  insertAt();
-  printElements();
+    default:
+      printf("Invalid Input");
+      break;
+    }
+  }
+ 
 
   return 0;
 }
