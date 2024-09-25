@@ -186,41 +186,75 @@ void deleteNode()
   printf("Enter the Node position you want to delete:");
   scanf("%d", &position);
 
+  // Check position is valid or not
   if (position <= 0 || position > totalNodes)
   {
     printf("Invalid Position");
   }
 
+  // If Position is first node
   if (position == 1)
   {
-    headNode = tempHeadNode->next;
-    headNode->prev = NULL;
+    if (totalNodes == 1)
+    {
+      free(headNode);
+      headNode = NULL;
+    }
+    else
+    {
+      headNode = tempHeadNode->next;
+      free(headNode->prev);
+      headNode->prev = NULL;
+    }
     return;
   }
 
   int currentPosition = 1;
-  while (position - 1 > currentPosition)
+  while (position > currentPosition)
   {
     tempHeadNode = tempHeadNode->next;
     currentPosition++;
   }
-  if (position == totalNodes)
+
+  struct Node *nodeToDelete = tempHeadNode;
+  tempHeadNode->prev->next = tempHeadNode->next;
+  if (tempHeadNode->next != NULL)
+    tempHeadNode->next->prev = tempHeadNode->prev;
+  free(nodeToDelete);
+  nodeToDelete = NULL;
+  return;
+}
+
+void update()
+{
+  int ch;
+  do
   {
-    struct Node *nodeToDelete = tempHeadNode->next;
-    tempHeadNode->next = NULL;
-    free(nodeToDelete);
-    nodeToDelete = NULL;
-    return;
-  }
-  else
-  {
-    struct Node *nodeToDelete = tempHeadNode->next;
-    tempHeadNode->next->next->prev = tempHeadNode;
-    tempHeadNode->next = tempHeadNode->next->next;
-    free(nodeToDelete);
-    nodeToDelete = NULL;
-    return;
-  }
+
+    int position;
+    int totalNodes = countNodes();
+    printf("Enter the position: ");
+    scanf("%d", &position);
+    if (position <= 0 || position > totalNodes)
+    {
+      printf("Please enter a valid Position\n");
+    }
+    else
+    {
+      int currentPosition = 1;
+      int age;
+      struct Node *temp = headNode;
+      while (position > currentPosition)
+      {
+        temp = temp->next;
+      }
+      printf("Enter age:");
+      scanf("%d", &age);
+      temp->age = age;
+    }
+    printf("Enter 0 for update more, otherwise 1: \n");
+    scanf("%d", &ch);
+  } while (ch == 0);
 }
 
 int main()
@@ -230,6 +264,7 @@ int main()
   // insertAt();
   printList();
   deleteNode();
+  update();
 
   printList();
   // printReverse();
