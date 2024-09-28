@@ -114,6 +114,8 @@ void addLast() {};
 
 void insertAt()
 {
+  if (headNode == NULL)
+    return;
   int age, i, position;
   int totalNodes = countLength();
   printf("Enter position where to insert: ");
@@ -174,14 +176,27 @@ void deleteNode()
 
   if (position == 1)
   {
-    struct node *temp = headNode->next;
-    headNode = headNode->next;
-    free(temp);
-    temp = NULL;
-    return;
+    if (totalNodes == 1)
+    {
+      free(headNode);
+      headNode = NULL;
+    }
+    else
+    {
+
+      struct node *lastNode = headNode;
+      while (lastNode->next != headNode)
+      {
+        lastNode = lastNode->next;
+      }
+      headNode = headNode->next;
+      free(lastNode->next);
+      lastNode->next = headNode;
+    }
   }
   else
   {
+    printf("Node !=1 and totalNodes >1");
     int livePosition = 1;
     struct node *temp = headNode;
     while (position - 1 > livePosition)
@@ -189,13 +204,36 @@ void deleteNode()
       temp = temp->next;
       livePosition++;
     }
-
-    struct node *ptrToDelete = temp->next;
-    temp->next = temp->next->next;
-    free(ptrToDelete);
-    ptrToDelete = NULL;
-    return;
+    if (position == totalNodes)
+    {
+      struct node *nodeToDelete = temp->next;
+      temp->next = headNode;
+      free(nodeToDelete);
+      nodeToDelete = NULL;
+    }
+    else
+    {
+      struct node *ptrToDelete = temp->next;
+      temp->next = temp->next->next;
+      free(ptrToDelete);
+      ptrToDelete = NULL;
+    }
   }
+}
+
+void deleteAll()
+{
+  if (headNode == NULL)
+    return;
+  struct node *temp = headNode;
+  do
+  {
+    free(temp);
+    temp = temp->next;
+  } while (temp->next != headNode);
+  free(headNode);
+  temp = NULL;
+  headNode = NULL;
 }
 
 void update()
@@ -239,7 +277,8 @@ int main()
     printf("\n 5. update Node at");
     printf("\n 6. Print Nodes");
     printf("\n 7. Count Nodes");
-    printf("\n 8. Exit\n");
+    printf("\n 8. deleteAll Nodes");
+    printf("\n 9. Exit\n");
     printf("Enter you option: ");
     scanf("%d", &ch);
 
@@ -266,6 +305,9 @@ int main()
       printf("%d", countLength());
       break;
     case 8:
+      deleteAll();
+      break;
+    case 9:
       return 0;
       break;
 
