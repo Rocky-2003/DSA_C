@@ -110,11 +110,139 @@ void printNodesBackward()
     } while (temp != headNode->prev);
   }
 }
+
+void insertAt()
+{
+  int totalNodes = countNodes();
+  int position, age;
+
+  printf("Enter the position where you want to add Node:\n");
+  scanf("%d", &position);
+  if (position <= 0 || position > totalNodes + 1)
+  {
+    printf("Please enter a valid poistion!\n");
+    return;
+  }
+
+  printf("Enter the age:\n");
+  scanf("%d", &age);
+  struct Node *nodeToInsert = addNode(age);
+
+  if (position == 1)
+  {
+    struct Node *temp = headNode;
+    nodeToInsert->next = temp;
+    nodeToInsert->prev = temp->prev;
+    temp->prev->next = nodeToInsert;
+    temp->prev = nodeToInsert;
+    headNode = nodeToInsert;
+  }
+  else
+  {
+    struct Node *temp = headNode;
+    for (int i = 1; i < position - 1; i++)
+    {
+      temp = temp->next;
+    }
+
+    nodeToInsert->next = temp->next;
+    nodeToInsert->prev = temp;
+    temp->next->prev = nodeToInsert;
+    temp->next = nodeToInsert;
+  }
+}
+
+void deleteNode()
+{
+  int totalNodes = countNodes();
+  int position;
+
+  printf("Enter the position of node you want to delete: \n");
+  scanf("%d", &position);
+
+  if (position <= 0 || position > totalNodes)
+  {
+    printf("Please enter a valid Position\n");
+    return;
+  }
+  struct Node *nodeToDelete = headNode;
+
+  if (totalNodes == 1 && position == 1)
+  {
+    free(headNode);
+    headNode = NULL;
+  }
+  else
+  {
+    for (int i = 1; i < position; i++)
+    {
+      nodeToDelete = nodeToDelete->next;
+    }
+    nodeToDelete->next->prev = nodeToDelete->prev;
+    nodeToDelete->prev->next = nodeToDelete->next;
+    if (position == 1)
+      headNode = nodeToDelete->next;
+    free(nodeToDelete);
+    nodeToDelete = NULL;
+  }
+}
+
+
+
+void addLast() {}
+void update() {}
+
 int main()
 {
-  addFirst();
-  countNodes();
-  printNodes();
-  printNodesBackward();
+
+  int ch;
+  while (1)
+  {
+    printf("\n 1. Add Node First");
+    printf("\n 2. Add Node Last");
+    printf("\n 3. Insert Node at");
+    printf("\n 4. Delete Node at");
+    printf("\n 5. update Node at");
+    printf("\n 6. Print Nodes");
+    printf("\n 7. Count Nodes");
+    printf("\n 8. printNodesBackward Nodes");
+    printf("\n 9. Exit\n");
+    printf("Enter you option: ");
+    scanf("%d", &ch);
+
+    switch (ch)
+    {
+    case 1:
+      addFirst();
+      break;
+    case 2:
+      addLast();
+      break;
+    case 3:
+      insertAt();
+      break;
+    case 4:
+      deleteNode();
+      break;
+    case 5:
+      update();
+      break;
+    case 6:
+      printNodes();
+    case 7:
+      printf("%d", countNodes());
+      break;
+    case 8:
+      printNodesBackward();
+      break;
+    case 9:
+      return 0;
+      break;
+
+    default:
+      printf("Invalid Input");
+      break;
+    }
+  }
   return 0;
 }
