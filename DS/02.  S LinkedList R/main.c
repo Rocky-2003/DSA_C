@@ -194,6 +194,31 @@ void update()
   temp->age = age;
 }
 
+void reverseList()
+{
+
+  struct node *currentNode = headNode;
+  struct node *nextNode;
+  struct node *lastNode;
+
+  do
+  {
+
+    nextNode = currentNode->next;
+    if (currentNode == headNode)
+    {
+      currentNode->next = NULL;
+    }
+    else
+    {
+      currentNode->next = lastNode;
+    }
+    lastNode = currentNode;
+    currentNode = nextNode;
+  } while (currentNode != NULL);
+  headNode = lastNode;
+};
+
 int main()
 {
 
@@ -208,7 +233,8 @@ int main()
     printf("\n 5. update Node at");
     printf("\n 6. Print Nodes");
     printf("\n 7. Count Nodes");
-    printf("\n 8. Exit\n");
+    printf("\n 8. reverseList");
+    printf("\n 9. Exit\n");
     printf("Enter you option: ");
     scanf("%d", &ch);
 
@@ -235,6 +261,9 @@ int main()
       printf("%d", countLength());
       break;
     case 8:
+      reverseList();
+      break;
+    case 9:
       return 0;
       break;
 
@@ -243,7 +272,6 @@ int main()
       break;
     }
   }
- 
 
   return 0;
 }

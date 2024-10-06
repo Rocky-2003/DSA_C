@@ -187,7 +187,34 @@ void deleteNode()
   }
 }
 
+void reverseList()
+{
 
+  if (headNode == NULL)
+  {
+    printf("List is Empty!");
+  }
+  else
+  {
+
+    struct Node *ptr = headNode;
+    struct Node *temp;
+    do
+    {
+      temp = ptr->prev;
+      ptr->prev = ptr->next;
+      ptr->next = temp;
+
+      ptr = ptr->prev;
+
+    } while (ptr!= headNode);
+
+    if (temp != NULL)
+    {
+      headNode = temp->prev;
+    }
+  }
+}
 
 void addLast() {}
 void update() {}
@@ -199,7 +226,7 @@ int main()
   while (1)
   {
     printf("\n 1. Add Node First");
-    printf("\n 2. Add Node Last");
+    printf("\n 2. reverseList ");
     printf("\n 3. Insert Node at");
     printf("\n 4. Delete Node at");
     printf("\n 5. update Node at");
@@ -216,7 +243,7 @@ int main()
       addFirst();
       break;
     case 2:
-      addLast();
+      reverseList();
       break;
     case 3:
       insertAt();
