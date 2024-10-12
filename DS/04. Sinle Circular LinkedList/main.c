@@ -263,6 +263,31 @@ void update()
   temp->age = age;
 }
 
+void reverseList()
+{
+  if (headNode == NULL || headNode->next == headNode)
+  {
+    printf("List is Empty! or only one element");
+  }
+  else
+  {
+
+     struct node *currentNode = headNode;
+    struct node *lastNode;
+    struct node *nextNode;
+
+    do
+    {
+      nextNode = currentNode->next;
+      currentNode->next = lastNode;
+      lastNode = currentNode;
+      currentNode = nextNode;
+
+    } while (currentNode != headNode);
+    headNode->next = lastNode;
+    headNode = lastNode;
+  }
+}
 int main()
 {
 
@@ -278,7 +303,8 @@ int main()
     printf("\n 6. Print Nodes");
     printf("\n 7. Count Nodes");
     printf("\n 8. deleteAll Nodes");
-    printf("\n 9. Exit\n");
+    printf("\n 9. ReverseList Nodes");
+    printf("\n 10. Exit\n");
     printf("Enter you option: ");
     scanf("%d", &ch);
 
@@ -308,6 +334,9 @@ int main()
       deleteAll();
       break;
     case 9:
+      reverseList();
+      break;
+    case 10:
       return 0;
       break;
 

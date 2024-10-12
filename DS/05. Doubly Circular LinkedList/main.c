@@ -190,9 +190,9 @@ void deleteNode()
 void reverseList()
 {
 
-  if (headNode == NULL)
+  if (headNode == NULL|| headNode->next== headNode)
   {
-    printf("List is Empty!");
+    printf("List is Empty! or only one element");
   }
   else
   {

@@ -98,9 +98,9 @@ int countNodes()
 
 void reverseList()
 {
-  if (headNode == NULL)
+  if (headNode == NULL|| headNode->next==NULL)
   {
-    printf("List is Empty!+++\n");
+    printf("List is Empty! or only one element\n");
   }
   else
   {

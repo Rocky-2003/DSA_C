@@ -205,14 +205,7 @@ void reverseList()
   {
 
     nextNode = currentNode->next;
-    if (currentNode == headNode)
-    {
-      currentNode->next = NULL;
-    }
-    else
-    {
-      currentNode->next = lastNode;
-    }
+    currentNode->next = lastNode;
     lastNode = currentNode;
     currentNode = nextNode;
   } while (currentNode != NULL);

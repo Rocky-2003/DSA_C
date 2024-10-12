@@ -257,15 +257,55 @@ void update()
   } while (ch == 0);
 }
 
+void findByAge()
+{
+
+  if(headNode==NULL||headNode->next==NULL){
+    printf("List is empty or only one node in it!");
+    return;
+  }
+  int ch;
+  do
+  {
+
+    int age;
+    printf("Enter the age: ");
+    scanf("%d", &age);
+
+    struct Node *temp = headNode;
+    int currentPosition = 1;
+    while (temp != NULL)
+    {
+
+      if (age == temp->age)
+      {
+        printf("Age is %d,  Position is %d\n", temp->age, currentPosition);
+        break;
+      }
+      else
+      {
+        currentPosition++;
+        temp = temp->next;
+      }
+    } 
+    if(temp==NULL){
+      printf("Enter a valid pisition!\n");
+    }
+
+    printf("Enter 0 for update more, otherwise 1: \n");
+    scanf("%d", &ch);
+  } while (ch == 0);
+}
+
 int main()
 {
 
   addLast();
   // insertAt();
   printList();
-  deleteNode();
-  update();
-
+  // deleteNode();
+  // update();
+  findByAge();
   printList();
   // printReverse();
 }

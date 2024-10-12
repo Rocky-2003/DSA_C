@@ -5,7 +5,7 @@
 struct Node
 {
 
-  int rollNo;
+  // int rollNo;
   int age;
   struct Node *next;
 
@@ -14,10 +14,11 @@ struct Node
 
 struct Node *headNode = NULL;
 
-struct Node *addElement(int rollNo, int age)
+// struct Node *addElement(int rollNo, int age)
+struct Node *addElement(int age)
 {
   struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
-  newNode->rollNo = rollNo;
+  // newNode->rollNo = rollNo;
   newNode->age = age;
   newNode->next = NULL;
   return newNode;
@@ -32,9 +33,10 @@ void addFirst()
     struct Node *p1;
     printf("enter age\n");
     scanf("%d", &age);
-    printf("enter rollNo\n");
-    scanf("%d", &rollNo);
-    p1 = addElement(rollNo, age);
+    // printf("enter rollNo\n");
+    // scanf("%d", &rollNo);
+    // p1 = addElement(rollNo, age);
+    p1 = addElement(age);
     p1->next = headNode;
     headNode = p1;
     printf("Do you want more node(y,n)");
@@ -42,7 +44,6 @@ void addFirst()
     ch = getchar();
   } while (ch == 'y');
 }
-
 void addLast()
 {
   char ch;
@@ -53,9 +54,10 @@ void addLast()
     struct Node *p1;
     printf("enter age\n");
     scanf("%d", &age);
-    printf("enter rollNo\n");
-    scanf("%d", &rollNo);
-    p1 = addElement(rollNo, age);
+    // printf("enter rollNo\n");
+    // scanf("%d", &rollNo);
+    // p1 = addElement(rollNo, age);
+    p1 = addElement(age);
     if (headNode == NULL)
     {
       headNode = p1;
@@ -75,7 +77,6 @@ void addLast()
 
   } while (ch == 'y');
 }
-
 void printElement(struct Node *temp)
 {
 
@@ -88,7 +89,8 @@ void printElement(struct Node *temp)
   {
     while (temp != NULL)
     {
-      printf("Roll No. : %d, Age: %d\n", temp->rollNo, temp->age);
+      // printf("Roll No. : %d, Age: %d\n", temp->rollNo, temp->age);
+      printf(" Age: %d\n", temp->age);
       temp = temp->next;
     }
   }
@@ -119,9 +121,10 @@ void insertAt(struct Node *temp)
   scanf("%d", &position);
   printf("enter age\n");
   scanf("%d", &age);
-  printf("enter rollNo\n");
-  scanf("%d", &rollNo);
-  newNode = addElement(rollNo, age);
+  // printf("enter rollNo\n");
+  // scanf("%d", &rollNo);
+  // newNode = addElement(rollNo, age);
+  newNode = addElement(age);
 
   if (position <= lastPosition && position > 0)
   {
@@ -158,13 +161,58 @@ void insertAt(struct Node *temp)
   }
 }
 
+void deleteNode()
+{
+  int age;
+  printf("Enter the Age to Delete  Node: ");
+  scanf("%d", &age);
+  if (headNode->age == age)
+  {
+
+    if (headNode->next == NULL)
+    {
+      free(headNode);
+      headNode = NULL;
+    }
+    else
+    {
+      struct Node *temp = headNode;
+      headNode = headNode->next;
+      free(temp);
+      temp = NULL;
+    }
+  }
+  else
+  {
+    struct Node *temp = headNode;
+    struct Node *beforeTemp = NULL;
+    while (temp != NULL && temp->age == age)
+    {
+      beforeTemp = temp;
+      temp = temp->next;
+    }
+
+    if (temp != NULL)
+    {
+      beforeTemp->next = temp->next;
+      free(temp);
+      temp == NULL;
+    }
+    else
+    {
+      printf("Enter a valid age\n");
+      deleteNode();
+    }
+  }
+}
+
 int main()
 {
   addFirst();
 
   printElement(headNode);
-
-  insertAt(headNode);
+  deleteNode();
+  // insertAt(headNode);
   printElement(headNode);
 
   return 0;
