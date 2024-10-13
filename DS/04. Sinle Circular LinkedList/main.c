@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include <stdlib.h>
 
 struct node
@@ -272,7 +273,7 @@ void reverseList()
   else
   {
 
-     struct node *currentNode = headNode;
+    struct node *currentNode = headNode;
     struct node *lastNode;
     struct node *nextNode;
 
@@ -288,6 +289,39 @@ void reverseList()
     headNode = lastNode;
   }
 }
+
+void findMid()
+{
+
+  if (headNode != NULL)
+  {
+
+    struct node *temp = headNode;
+    double MiddleNodes = 1;
+    while (temp->next != headNode)
+    {
+      temp = temp->next;
+      MiddleNodes++;
+    }
+
+    MiddleNodes = ceil(MiddleNodes / 2);
+  
+    int currentNode = 1;
+    temp = headNode;
+    while (MiddleNodes > currentNode)
+    {
+      temp = temp->next;
+      currentNode++;
+    }
+
+    printf("Age is %d", temp->age);
+  }
+  else
+  {
+    printf("List is Empty!");
+  }
+}
+
 int main()
 {
 
@@ -334,7 +368,7 @@ int main()
       deleteAll();
       break;
     case 9:
-      reverseList();
+      findMid();
       break;
     case 10:
       return 0;

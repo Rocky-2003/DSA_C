@@ -26,7 +26,7 @@ struct Node *addElement(int age)
 
 void addFirst()
 {
-  char ch;
+  int ch;
   do
   {
     int rollNo, age;
@@ -39,11 +39,11 @@ void addFirst()
     p1 = addElement(age);
     p1->next = headNode;
     headNode = p1;
-    printf("Do you want more node(y,n)");
-    fflush(stdin); // to clear buffer
-    ch = getchar();
-  } while (ch == 'y');
+    printf("Do you want more node(0 for yes, 1 for No!)"); // to clear buffer
+    scanf("%d", &ch);
+  } while (ch == 0);
 }
+
 void addLast()
 {
   char ch;
@@ -77,9 +77,10 @@ void addLast()
 
   } while (ch == 'y');
 }
-void printElement(struct Node *temp)
-{
 
+void printElement()
+{
+  struct Node *temp = headNode;
   if (temp == NULL)
   {
 
@@ -95,8 +96,10 @@ void printElement(struct Node *temp)
     }
   }
 }
-int count(struct Node *temp)
+
+int count()
 {
+  struct Node *temp = headNode;
   int length = 0;
   while (temp != NULL)
   {
@@ -106,9 +109,10 @@ int count(struct Node *temp)
   printf("Length is: %d\n", length);
   return length;
 }
-void insertAt(struct Node *temp)
-{
 
+void insertAt()
+{
+  struct Node *temp = headNode;
   int position;
   int rollNo, age;
   int lastPosition = count(temp) + 1;
@@ -161,11 +165,14 @@ void insertAt(struct Node *temp)
   }
 }
 
-void deleteNode()
+void deleteNodeByAge()
 {
   int age;
   printf("Enter the Age to Delete  Node: ");
   scanf("%d", &age);
+
+  if(age==0)
+    return;
   if (headNode->age == age)
   {
 
@@ -201,19 +208,88 @@ void deleteNode()
     else
     {
       printf("Enter a valid age\n");
-      deleteNode();
+      deleteNodeByAge();
     }
+  }
+}
+
+void findMid()
+{
+  if (headNode == NULL)
+  {
+    printf("List is empty!");
+  }
+  else if (headNode->next == NULL)
+  {
+    printf("There is only one Node in the List");
+  }
+  else
+  {
+    struct Node *temp1 = headNode;
+    struct Node *temp2 = headNode;
+
+    while (temp1 != NULL)
+    {
+      temp1 = temp1->next;
+      if (temp1->next != NULL)
+        temp1 = temp1->next;
+      if (temp1->next != NULL)
+        temp2 = temp2->next;
+    }
+
+    printf("Middle Node, Data's Age is: %d", temp2->age);
   }
 }
 
 int main()
 {
-  addFirst();
+  int ch;
+  while (1)
+  {
+    printf("\n 1. Add Node First");
+    printf("\n 2. Add Node Last");
+    printf("\n 3. Print Nodes");
+    printf("\n 4. Count Nodes");
+    printf("\n 5. Insert Node at");
+    printf("\n 6. Delete by age Node at");
+    printf("\n 7. Find Middle Node");
+    // printf("\n 8. reverseList");
+    printf("\n 8. Exit\n");
 
-  printElement(headNode);
-  deleteNode();
-  // insertAt(headNode);
-  printElement(headNode);
+    printf("Enter the Option Number:\n");
+    scanf("%d", &ch);
+
+    switch (ch)
+    {
+    case 1:
+      addFirst();
+      break;
+    case 2:
+      addLast();
+      break;
+    case 3:
+      printElement();
+      break;
+    case 4:
+      count();
+      break;
+    case 5:
+      insertAt();
+      break;
+    case 6:
+      deleteNodeByAge();
+      break;
+    case 7:
+      findMid();
+      break;
+    case 8:
+      return 0;
+      break;
+    default:
+      printf("Enter any Option");
+      break;
+    }
+  }
 
   return 0;
 }
