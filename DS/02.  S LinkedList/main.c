@@ -212,49 +212,152 @@ void reverseList()
   headNode = lastNode;
 };
 
+// void deleteNodeByAge()
+// {
+//   if (headNode == NULL)
+//   {
+//     printf("List is Empty!");
+//     return;
+//   }
+//   int age;
+//   printf("Enter age to delete Node:");
+//   scanf("%d", &age);
+//   if (age == 0)
+//   {
+//     printf("Enter a valid Age");
+//     return;
+//   }
+//   struct node *temp = headNode;
+//   struct node *beforeTemp;
+//   while (temp != NULL || temp->age == age)
+//   {
+//     beforeTemp = temp;
+//     temp = temp->next;
+//   }
+//   if (headNode->next == NULL && headNode->age == age)
+//   {
+//     free(headNode);
+//     free(beforeTemp);
+//     free(temp);
+//     beforeTemp = temp = headNode = NULL;
+//   }
+//   else if (headNode->next != NULL && headNode->age == age)
+//   {
+//     headNode = temp;
+//     free(beforeTemp);
+//     free(temp);
+//     beforeTemp = temp = NULL;
+//   }
+//   else
+//   {
+//     beforeTemp->next = temp->next;
+//     free(temp);
+//     temp = NULL;
+//   }
+// }
+
 void deleteNodeByAge()
 {
+  if (headNode == NULL)
+  {
+    printf("List is Empty!\n");
+    return;
+  }
+
   int age;
-  printf("Enter the Age to Delete  Node: ");
+  printf("Enter age to delete Node: ");
   scanf("%d", &age);
+
+  if (age <= 0)
+  {
+    printf("Enter a valid Age\n");
+    return;
+  }
+
+  struct node *temp = headNode;
+  struct node *beforeTemp = NULL;
+
+  // If the head node itself holds the age to be deleted
   if (headNode->age == age)
   {
+    temp = headNode;           // Store the current head
+    headNode = headNode->next; // Move head to the next node
+    free(temp);                // Free the old head
+    printf("Node with age %d deleted (Head Node).\n", age);
+    return;
+  }
 
-    if (headNode->next == NULL)
-    {
-      free(headNode);
-      headNode = NULL;
-    }
-    else
-    {
-      struct node *temp = headNode;
-      headNode = headNode->next;
-      free(temp);
-      temp = NULL;
-    }
+  // Traverse the list to find the node to delete
+  while (temp != NULL && temp->age != age)
+  {
+    beforeTemp = temp; // Track the node before the one to delete
+    temp = temp->next;
+  }
+
+  // If the node with the given age is not found
+  if (temp == NULL)
+  {
+    printf("Node with age %d not found.\n", age);
+    return;
+  }
+
+  // Node found; unlink it from the list
+  beforeTemp->next = temp->next;
+  free(temp); // Free the memory of the node to delete
+  printf("Node with age %d deleted.\n", age);
+}
+
+void addToSorted()
+{
+  if (headNode == NULL)
+  {
+    printf("List is Empty!");
+    return;
+  }
+  int age;
+  printf("Enter the age of new node:");
+  scanf("%d", &age);
+  struct node *newNode = addElement(age);
+
+  struct node *temp = headNode;
+  struct node *beforeTemp;
+  while (temp != NULL && temp->age < newNode->age)
+  {
+    beforeTemp = temp;
+    temp = temp->next;
+  }
+
+  if (temp == headNode)
+  {
+    newNode->next = headNode;
+    headNode = newNode;
   }
   else
   {
-    struct node *temp = headNode;
-    struct node *beforeTemp = NULL;
-    while (temp != NULL && temp->age == age)
-    {
-      beforeTemp = temp;
-      temp = temp->next;
-    }
-
-    if (temp != NULL)
-    {
-      beforeTemp->next = temp->next;
-      free(temp);
-      temp == NULL;
-    }
-    else
-    {
-      printf("Enter a valid age\n");
-      deleteNode();
-    }
+    newNode->next = temp;
+    beforeTemp->next = newNode;
   }
+}
+
+int checkSorted()
+{
+
+  if (headNode == NULL || headNode->next == NULL)
+  {
+
+    return 1;
+  }
+
+  struct node *temp = headNode;
+  while (temp != NULL)
+  {
+    if (temp->age > temp->next->age)
+    {
+      return 0;
+    }
+    temp = temp->next;
+  }
+  return 1;
 }
 
 int main()
@@ -273,7 +376,9 @@ int main()
     printf("\n 7. Count Nodes");
     printf("\n 8. reverseList");
     printf("\n 9. DeleteNodeByAge");
-    printf("\n 10. Exit\n");
+    printf("\n 10. addToSorted");
+    printf("\n 11. checkSorted");
+    printf("\n 12. Exit\n");
     printf("Enter you option: ");
     scanf("%d", &ch);
 
@@ -302,10 +407,16 @@ int main()
     case 8:
       reverseList();
       break;
-    case 8:
+    case 9:
       deleteNodeByAge();
       break;
     case 10:
+      addToSorted();
+      break;
+    case 11:
+      checkSorted();
+      break;
+    case 12:
       return 0;
       break;
 

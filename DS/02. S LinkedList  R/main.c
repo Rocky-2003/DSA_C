@@ -167,15 +167,24 @@ void insertAt()
 
 void deleteNodeByAge()
 {
+
+  if (headNode == NULL)
+  {
+    printf("List is Empty!");
+    return;
+  }
   int age;
   printf("Enter the Age to Delete  Node: ");
   scanf("%d", &age);
 
-  if(age==0)
+  if (age == 0)
+  {
+    printf("Enter a valid age");
     return;
+  }
+
   if (headNode->age == age)
   {
-
     if (headNode->next == NULL)
     {
       free(headNode);
@@ -193,7 +202,7 @@ void deleteNodeByAge()
   {
     struct Node *temp = headNode;
     struct Node *beforeTemp = NULL;
-    while (temp != NULL && temp->age == age)
+    while (temp != NULL || temp->age == age)
     {
       beforeTemp = temp;
       temp = temp->next;
@@ -241,6 +250,48 @@ void findMid()
   }
 }
 
+void deleteNode()
+{
+  if (headNode == NULL)
+  {
+    printf("List is Empty!");
+    return;
+  }
+
+  printf("Enter the Node position:");
+  int position;
+  scanf("%d", &position);
+
+  if (position <= 0 || position > count())
+  {
+    printf("Enter a valid position!");
+    deleteNode();
+  }
+  else
+  {
+    int currentPosition = 1;
+    struct Node *temp = headNode;
+    if (position == 1)
+    {
+      headNode = headNode->next;
+      free(temp);
+      temp = NULL;
+    }
+    else
+    {
+      while (position - 1 > currentPosition)
+      {
+        temp = temp->next;
+        currentPosition++;
+      }
+      struct Node *toDelete = temp->next;
+      temp->next = temp->next->next;
+      free(toDelete);
+      toDelete = NULL;
+    }
+  }
+}
+
 int main()
 {
   int ch;
@@ -253,8 +304,8 @@ int main()
     printf("\n 5. Insert Node at");
     printf("\n 6. Delete by age Node at");
     printf("\n 7. Find Middle Node");
-    // printf("\n 8. reverseList");
-    printf("\n 8. Exit\n");
+    printf("\n 8. deleteNode");
+    printf("\n 9. Exit\n");
 
     printf("Enter the Option Number:\n");
     scanf("%d", &ch);
@@ -283,6 +334,9 @@ int main()
       findMid();
       break;
     case 8:
+      deleteNode();
+      break;
+    case 9:
       return 0;
       break;
     default:
