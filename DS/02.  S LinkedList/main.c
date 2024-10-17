@@ -7,13 +7,16 @@ struct node
   struct node *next;
 };
 
-struct node *headNode = NULL;
+struct node *list1 = NULL;
+struct node *list2 = NULL;
 
 struct node *addElement(int age)
 {
   struct node *newNode = (struct node *)malloc(sizeof(struct node));
   newNode->age = age;
   newNode->next = NULL;
+
+  // headNode->next->next->next = headNode->next;
   return newNode;
 }
 
@@ -23,7 +26,7 @@ void getInput(int *age)
   scanf("%d", age);
 }
 
-void addFirst()
+void addFirst(struct node **headNode)
 {
   int res = 1;
   do
@@ -31,14 +34,14 @@ void addFirst()
     int age;
     getInput(&age);
     struct node *n = addElement(age);
-    n->next = headNode;
-    headNode = n;
+    n->next = *headNode;
+    *headNode = n;
     printf("Do you want to add more nodes 0 for yes & 1 for no:");
     scanf("%d", &res);
   } while (res == 0);
 }
 
-void addLast()
+void addLast(struct node **headNode)
 {
   int res = 1;
   do
@@ -46,14 +49,14 @@ void addLast()
     int age;
     getInput(&age);
     struct node *n = addElement(age);
-    if (headNode == NULL)
+    if (*headNode == NULL)
     {
-      n->next = headNode;
-      headNode = n;
+      n->next = *headNode;
+      *headNode = n;
     }
     else
     {
-      struct node *temp = headNode;
+      struct node *temp = *headNode;
       while (temp->next != NULL)
       {
         temp = temp->next;
@@ -65,7 +68,7 @@ void addLast()
   } while (res == 0);
 }
 
-void printElements()
+void printElements(struct node *headNode)
 {
 
   if (headNode == NULL)
@@ -82,7 +85,7 @@ void printElements()
   }
 }
 
-int countLength()
+int countLength(struct node *headNode)
 {
   struct node *temp = headNode;
   int count = 0;
@@ -96,10 +99,10 @@ int countLength()
   return count;
 }
 
-void insertAt()
+void insertAt(struct node **headNode)
 {
   int age, i, position;
-  int leng = countLength();
+  int leng = countLength(*headNode);
   printf("Enter position where to insert: ");
   scanf("%d", &position);
 
@@ -113,12 +116,12 @@ void insertAt()
   struct node *n = addElement(age);
   if (position == 1)
   {
-    n->next = headNode;
-    headNode = n;
+    n->next = *headNode;
+    *headNode = n;
     return;
   }
 
-  struct node *temp = headNode;
+  struct node *temp = *headNode;
   for (i = 1; i < position - 1; i++)
   {
     temp = temp->next;
@@ -128,10 +131,10 @@ void insertAt()
   temp->next = n;
 }
 
-void deleteNode()
+void deleteNode(struct node **headNode)
 {
   int position;
-  int totalNodes = countLength();
+  int totalNodes = countLength(*headNode);
   printf("Enter the Position to Delete  Node: ");
   scanf("%d", &position);
 
@@ -143,8 +146,8 @@ void deleteNode()
 
   if (position == 1)
   {
-    struct node *temp = headNode->next;
-    headNode = headNode->next;
+    struct node *temp = (*headNode)->next;
+    *headNode = (*headNode)->next;
     free(temp);
     temp = NULL;
     return;
@@ -152,7 +155,7 @@ void deleteNode()
   else
   {
     int livePosition = 1;
-    struct node *temp = headNode;
+    struct node *temp = *headNode;
     while (position - 1 > livePosition)
     {
       temp = temp->next;
@@ -167,13 +170,13 @@ void deleteNode()
   }
 }
 
-void update()
+void update(struct node **headNode)
 {
   int position, age;
   int livePosition = 1;
   printf("Enter Position: ");
   scanf("%d", &position);
-  int totalNodes = countLength();
+  int totalNodes = countLength(*headNode);
 
   if (position <= 0 || position > totalNodes)
   {
@@ -181,7 +184,7 @@ void update()
     return;
   }
 
-  struct node *temp = headNode;
+  struct node *temp = *headNode;
 
   while (position > livePosition)
   {
@@ -194,10 +197,10 @@ void update()
   temp->age = age;
 }
 
-void reverseList()
+void reverseList(struct node **headNode)
 {
 
-  struct node *currentNode = headNode;
+  struct node *currentNode = *headNode;
   struct node *nextNode;
   struct node *lastNode;
 
@@ -209,56 +212,12 @@ void reverseList()
     lastNode = currentNode;
     currentNode = nextNode;
   } while (currentNode != NULL);
-  headNode = lastNode;
+  *headNode = lastNode;
 };
 
-// void deleteNodeByAge()
-// {
-//   if (headNode == NULL)
-//   {
-//     printf("List is Empty!");
-//     return;
-//   }
-//   int age;
-//   printf("Enter age to delete Node:");
-//   scanf("%d", &age);
-//   if (age == 0)
-//   {
-//     printf("Enter a valid Age");
-//     return;
-//   }
-//   struct node *temp = headNode;
-//   struct node *beforeTemp;
-//   while (temp != NULL || temp->age == age)
-//   {
-//     beforeTemp = temp;
-//     temp = temp->next;
-//   }
-//   if (headNode->next == NULL && headNode->age == age)
-//   {
-//     free(headNode);
-//     free(beforeTemp);
-//     free(temp);
-//     beforeTemp = temp = headNode = NULL;
-//   }
-//   else if (headNode->next != NULL && headNode->age == age)
-//   {
-//     headNode = temp;
-//     free(beforeTemp);
-//     free(temp);
-//     beforeTemp = temp = NULL;
-//   }
-//   else
-//   {
-//     beforeTemp->next = temp->next;
-//     free(temp);
-//     temp = NULL;
-//   }
-// }
-
-void deleteNodeByAge()
+void deleteNodeByAge(struct node **headNode)
 {
-  if (headNode == NULL)
+  if (*headNode == NULL)
   {
     printf("List is Empty!\n");
     return;
@@ -274,15 +233,15 @@ void deleteNodeByAge()
     return;
   }
 
-  struct node *temp = headNode;
+  struct node *temp = *headNode;
   struct node *beforeTemp = NULL;
 
   // If the head node itself holds the age to be deleted
-  if (headNode->age == age)
+  if ((*headNode)->age == age)
   {
-    temp = headNode;           // Store the current head
-    headNode = headNode->next; // Move head to the next node
-    free(temp);                // Free the old head
+    temp = *headNode;              // Store the current head
+    *headNode = (*headNode)->next; // Move head to the next node
+    free(temp);                    // Free the old head
     printf("Node with age %d deleted (Head Node).\n", age);
     return;
   }
@@ -307,9 +266,9 @@ void deleteNodeByAge()
   printf("Node with age %d deleted.\n", age);
 }
 
-void addToSorted()
+void addToSorted(struct node **headNode)
 {
-  if (headNode == NULL)
+  if (*headNode == NULL)
   {
     printf("List is Empty!");
     return;
@@ -317,20 +276,21 @@ void addToSorted()
   int age;
   printf("Enter the age of new node:");
   scanf("%d", &age);
-  struct node *newNode = addElement(age);
 
-  struct node *temp = headNode;
+  struct node *newNode = addElement(age);
+  struct node *temp = *headNode;
   struct node *beforeTemp;
+
   while (temp != NULL && temp->age < newNode->age)
   {
     beforeTemp = temp;
     temp = temp->next;
   }
 
-  if (temp == headNode)
+  if (temp == *headNode)
   {
-    newNode->next = headNode;
-    headNode = newNode;
+    newNode->next = *headNode;
+    *headNode = newNode;
   }
   else
   {
@@ -339,34 +299,113 @@ void addToSorted()
   }
 }
 
-int checkSorted()
+int checkSorted(struct node *headNode)
 {
 
   if (headNode == NULL || headNode->next == NULL)
   {
 
+    printf("sorted");
     return 1;
   }
 
   struct node *temp = headNode;
-  while (temp != NULL)
+  while (temp->next != NULL)
   {
-    if (temp->age > temp->next->age)
+    if (temp->age >= temp->next->age)
     {
+      printf("Not sorted");
       return 0;
     }
     temp = temp->next;
   }
+  printf("sorted");
   return 1;
+}
+
+void checkLoop(struct node *headNode)
+{
+  if (headNode == NULL)
+  {
+    printf("List is Empty!");
+  }
+  else if (headNode->next == NULL)
+  {
+    printf("Only one Node is in the List!");
+  }
+  else
+  {
+    struct node *temp, *temp1;
+    temp = temp1 = headNode;
+    while (temp != NULL && temp && temp1)
+    {
+      temp = temp->next;
+      temp1 = temp1->next;
+      if (temp1 != NULL)
+        temp1 = temp1->next;
+    }
+
+    if (temp == temp1)
+      printf("There is Loop in list!");
+    else
+      printf("Tere is no Loop in List!");
+  }
+}
+
+void deleteDuplicate(struct node **headNode)
+{
+  if (*headNode == NULL)
+  {
+    printf("List is Empty");
+    return;
+  }
+  
+  if ((*headNode)->next == NULL)
+  {
+    printf("No Duplicate Node");
+  }
+  else
+  {
+    struct node *temp, *temp1, *beforeTemp1;
+    temp = *headNode;
+
+    while (temp != NULL)
+    {
+      temp1 = temp->next;
+      while (temp1 != NULL)
+      {
+        if (temp1->age == temp->age)
+        {
+          printf("temp is :%d, temp1 is :%d", temp->age, temp1->age);
+          beforeTemp1->next = temp1->next;
+          free(temp1);
+          temp1 = NULL;
+          return;
+        }
+        beforeTemp1 = temp1;
+        temp1 = temp1->next;
+      }
+      temp = temp->next;
+    }
+
+    // beforeTemp1->next = temp1->next;
+    // free(temp1);
+    // temp1 = NULL;
+  }
 }
 
 int main()
 {
 
-  int ch;
+  int ch, listChoice;
 
   while (1)
   {
+    printf("\nChoose Linked List to operate on (1 or 2): ");
+    scanf("%d", &listChoice);
+
+    struct node **selectedList = (listChoice == 1) ? &list1 : &list2;
+
     printf("\n 1. Add Node First");
     printf("\n 2. Add Node Last");
     printf("\n 3. Insert Node at");
@@ -378,45 +417,53 @@ int main()
     printf("\n 9. DeleteNodeByAge");
     printf("\n 10. addToSorted");
     printf("\n 11. checkSorted");
-    printf("\n 12. Exit\n");
+    printf("\n 12. checkLoop");
+    printf("\n 13. duplicateNode");
+    printf("\n 14. Exit\n");
     printf("Enter you option: ");
     scanf("%d", &ch);
 
     switch (ch)
     {
     case 1:
-      addFirst();
+      addFirst(selectedList);
       break;
     case 2:
-      addLast();
+      addLast(selectedList);
       break;
     case 3:
-      insertAt();
+      insertAt(selectedList);
       break;
     case 4:
-      deleteNode();
+      deleteNode(selectedList);
       break;
     case 5:
-      update();
+      update(selectedList);
       break;
     case 6:
-      printElements();
+      printElements(*selectedList);
     case 7:
-      printf("%d", countLength());
+      printf("%d", countLength(*selectedList));
       break;
     case 8:
-      reverseList();
+      reverseList(selectedList);
       break;
     case 9:
-      deleteNodeByAge();
+      deleteNodeByAge(selectedList);
       break;
     case 10:
-      addToSorted();
+      addToSorted(selectedList);
       break;
     case 11:
-      checkSorted();
+      checkSorted(*selectedList);
       break;
     case 12:
+      checkLoop(*selectedList);
+      break;
+    case 13:
+      deleteDuplicate(selectedList);
+      break;
+    case 14:
       return 0;
       break;
 
