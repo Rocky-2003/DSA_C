@@ -12,8 +12,8 @@ struct Node
   struct Node *prev;
 };
 
-struct Node *headNode = NULL;
-
+struct Node *list1 = NULL;
+struct Node *list2 = NULL;
 struct Node *addNode(int age)
 {
   struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
@@ -25,7 +25,7 @@ struct Node *addNode(int age)
   return newNode;
 }
 
-void addFirst()
+void addFirst(struct Node **headNode)
 {
   int ch = 1;
   do
@@ -39,16 +39,16 @@ void addFirst()
     // printf("Enter the name: ");
     // scanf("%d", &name);
     struct Node *newNode = addNode(age);
-    if (headNode == NULL)
+    if (*headNode == NULL)
     {
-      newNode->next = newNode->prev = headNode = newNode;
+      newNode->next = newNode->prev = *headNode = newNode;
     }
     else
     {
-      newNode->next = headNode;
-      newNode->prev = headNode->prev;
-      headNode->prev->next = newNode;
-      headNode->prev = newNode;
+      newNode->next = *headNode;
+      newNode->prev = (*headNode)->prev;
+      (*headNode)->prev->next = newNode;
+      (*headNode)->prev = newNode;
     }
 
     printf("Enter 0 for more nodes to add, otherwise 1:-  ");
@@ -56,7 +56,7 @@ void addFirst()
   } while (ch == 0);
 }
 
-int countNodes()
+int countNodes(struct Node *headNode)
 {
   if (headNode == NULL)
   {
@@ -75,7 +75,7 @@ int countNodes()
   return totalNodes;
 }
 
-void printNodes()
+void printNodes(struct Node *headNode)
 {
   if (headNode == NULL)
   {
@@ -93,7 +93,7 @@ void printNodes()
   }
 }
 
-void printNodesBackward()
+void printNodesBackward(struct Node *headNode)
 {
   if (headNode == NULL)
   {
@@ -111,9 +111,9 @@ void printNodesBackward()
   }
 }
 
-void insertAt()
+void insertAt(struct Node **headNode)
 {
-  int totalNodes = countNodes();
+  int totalNodes = countNodes(*headNode);
   int position, age;
 
   printf("Enter the position where you want to add Node:\n");
@@ -130,16 +130,16 @@ void insertAt()
 
   if (position == 1)
   {
-    struct Node *temp = headNode;
+    struct Node *temp = *headNode;
     nodeToInsert->next = temp;
     nodeToInsert->prev = temp->prev;
     temp->prev->next = nodeToInsert;
     temp->prev = nodeToInsert;
-    headNode = nodeToInsert;
+    *headNode = nodeToInsert;
   }
   else
   {
-    struct Node *temp = headNode;
+    struct Node *temp = *headNode;
     for (int i = 1; i < position - 1; i++)
     {
       temp = temp->next;
@@ -152,9 +152,9 @@ void insertAt()
   }
 }
 
-void deleteNode()
+void deleteNode(struct Node **headNode)
 {
-  int totalNodes = countNodes();
+  int totalNodes = countNodes(*headNode);
   int position;
 
   printf("Enter the position of node you want to delete: \n");
@@ -165,12 +165,12 @@ void deleteNode()
     printf("Please enter a valid Position\n");
     return;
   }
-  struct Node *nodeToDelete = headNode;
+  struct Node *nodeToDelete = *headNode;
 
   if (totalNodes == 1 && position == 1)
   {
-    free(headNode);
-    headNode = NULL;
+    free(*headNode);
+    *headNode = NULL;
   }
   else
   {
@@ -181,23 +181,23 @@ void deleteNode()
     nodeToDelete->next->prev = nodeToDelete->prev;
     nodeToDelete->prev->next = nodeToDelete->next;
     if (position == 1)
-      headNode = nodeToDelete->next;
+      *headNode = nodeToDelete->next;
     free(nodeToDelete);
     nodeToDelete = NULL;
   }
 }
 
-void reverseList()
+void reverseList(struct Node **headNode)
 {
 
-  if (headNode == NULL|| headNode->next== headNode)
+  if (*headNode == NULL || (*headNode)->next == *headNode)
   {
     printf("List is Empty! or only one element");
   }
   else
   {
 
-    struct Node *ptr = headNode;
+    struct Node *ptr = *headNode;
     struct Node *temp;
     do
     {
@@ -207,62 +207,151 @@ void reverseList()
 
       ptr = ptr->prev;
 
-    } while (ptr!= headNode);
+    } while (ptr != *headNode);
 
     if (temp != NULL)
     {
-      headNode = temp->prev;
+      *headNode = temp->prev;
     }
   }
 }
 
-void addLast() {}
-void update() {}
+void addLast(struct Node **headNode) {}
+
+void update(struct Node *headNode) {}
+
+void deleteNodeByAge(struct Node **headNode)b
+{
+  if (*headNode == NULL)
+  {
+    printf("list is Empty");
+    return;
+  }
+
+  int age;
+  printf("Enter age of you want to delete: ");
+  scanf("%d", &age);
+
+  if ((*headNode)->age == age)
+  {
+    if ((*headNode)->next == NULL || (*headNode)->next == *headNode || (*headNode)->prev==*headNode)
+    {
+      free(*headNode);
+      *headNode = NULL;
+    }
+    else
+    {
+      struct Node *temp = *headNode;
+      *headNode = (*headNode)->next;
+      (*headNode)->prev = temp->prev;
+      free(temp);
+      temp = NULL;
+    }
+  }
+  else
+  {
+    struct Node *temp = (*headNode);
+    while (temp->next != *headNode && temp->age != age)
+    {
+      temp = temp->next;
+    }
+    if (temp == NULL)
+    {
+      printf("Not age is matched In data");
+    }
+    else
+    {
+      struct Node *toDelete = temp;
+      temp->prev->next = temp->next;
+      temp->next->prev = temp->prev;
+      free(toDelete);
+      toDelete = NULL;
+    }
+  }
+}
 
 int main()
 {
 
-  int ch;
+  int ch, listChoice;
+
   while (1)
   {
+    printf("\nChoose Linked List to operate on (1 or 2): ");
+    scanf("%d", &listChoice);
+
+    struct Node **selectedList = (listChoice == 1) ? &list1 : &list2;
+
     printf("\n 1. Add Node First");
-    printf("\n 2. reverseList ");
+    printf("\n 2. Add Node Last");
     printf("\n 3. Insert Node at");
     printf("\n 4. Delete Node at");
     printf("\n 5. update Node at");
     printf("\n 6. Print Nodes");
     printf("\n 7. Count Nodes");
-    printf("\n 8. printNodesBackward Nodes");
-    printf("\n 9. Exit\n");
+    printf("\n 8. reverseList");
+    printf("\n 9. DeleteNodeByAge");
+    // printf("\n 10. addToSorted");
+    // printf("\n 11. checkSorted");
+    // printf("\n 12. checkLoop");
+    // printf("\n 13. duplicateNode");
+    // printf("\n 14. appendList");
+    // printf("\n 15. MergSortList");
+    printf("\n 10. delete Node by age\n");
+    printf("\n 11. Exit\n");
     printf("Enter you option: ");
     scanf("%d", &ch);
 
     switch (ch)
     {
     case 1:
-      addFirst();
+      addFirst(selectedList);
       break;
     case 2:
-      reverseList();
+      addLast(selectedList);
       break;
     case 3:
-      insertAt();
+      insertAt(selectedList);
       break;
     case 4:
-      deleteNode();
+      deleteNode(selectedList);
       break;
     case 5:
-      update();
+      update(*selectedList);
       break;
     case 6:
-      printNodes();
+      printNodes(*selectedList);
     case 7:
-      printf("%d", countNodes());
+      printf("%d", countNodes(*selectedList));
       break;
     case 8:
-      printNodesBackward();
+      printNodesBackward(*selectedList);
       break;
     case 9:
+      deleteNodeByAge(selectedList);
+      break;
+    case 10:
+      reverseList(selectedList);
+      break;
+    // case 10:
+    //   addToSorted(selectedList);
+    //   break;
+    // case 11:
+    //   checkSorted(*selectedList);
+    //   break;
+    // case 12:
+    //   checkLoop(*selectedList);
+    //   break;
+    // case 13:
+    //   deleteDuplicate(selectedList);
+    //   break;
+    // case 14:
+    //   appendList(list1, list2);
+    //   break;
+    // case 15:
+    //   mergeSortList(list1, list2);
+    //   break;
+    case 11:
       return 0;
       break;
 

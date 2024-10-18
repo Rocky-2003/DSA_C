@@ -112,12 +112,9 @@ int count()
 
 void insertAt()
 {
-  struct Node *temp = headNode;
   int position;
   int rollNo, age;
-  int lastPosition = count(temp) + 1;
-  struct Node *trav1;
-  struct Node *trav2;
+  int totalNodes = count(headNode) + 1;
 
   // Created a new Node;
   struct Node *newNode;
@@ -125,12 +122,9 @@ void insertAt()
   scanf("%d", &position);
   printf("enter age\n");
   scanf("%d", &age);
-  // printf("enter rollNo\n");
-  // scanf("%d", &rollNo);
-  // newNode = addElement(rollNo, age);
   newNode = addElement(age);
 
-  if (position <= lastPosition && position > 0)
+  if (position > 0 && position <= totalNodes )
   {
     int livePosition = 1;
     if (position == 1)
@@ -140,23 +134,14 @@ void insertAt()
     }
     else
     {
-
-      while (temp != NULL)
+      struct Node *temp = headNode;
+      while (position - 1 > livePosition)
       {
-
-        if (livePosition == position - 1)
-        {
-          trav1 = temp;
-        }
-        else if (livePosition == position)
-        {
-          trav2 = temp;
-        }
         temp = temp->next;
         livePosition++;
       }
-      trav1->next = newNode;
-      newNode->next = trav2;
+      newNode->next = temp->next;
+      temp->next = newNode;
     }
   }
   else

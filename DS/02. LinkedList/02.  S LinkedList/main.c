@@ -359,7 +359,7 @@ void deleteDuplicate(struct node **headNode)
     printf("List is Empty");
     return;
   }
-  
+
   if ((*headNode)->next == NULL)
   {
     printf("No Duplicate Node");
@@ -394,6 +394,71 @@ void deleteDuplicate(struct node **headNode)
   }
 }
 
+void appendList(struct node *list1, struct node *list2)
+{
+  if (list1 == NULL || list2 == NULL)
+  {
+    return;
+  }
+  struct node *temp = list1;
+  while (temp->next != NULL)
+  {
+    temp = temp->next;
+  }
+
+  temp->next = list2;
+}
+
+void mergeSortList(struct node *headNode1, struct node *headNode2)
+{
+  struct node *start1 = headNode1;
+  struct node *start2 = headNode2;
+
+  struct node *start, *last;
+  if (start1->age < start2->age)
+  {
+    start = start1;
+    last = start1;
+    start1 = start1->next;
+    last->next = NULL;
+  }
+  else
+  {
+    start = start2;
+    last = start2;
+    start2 = start2->next;
+    last->next = NULL;
+  }
+
+  while (start1 && start2)
+  {
+    if (start1->age < start2->age)
+    {
+      last->next = start1;
+      last = start1;
+      start1 = start1->next;
+      last->next = NULL;
+    }
+    else
+    {
+      last->next = start2;
+      last = start2;
+      start2 = start2->next;
+      last->next = NULL;
+    }
+  }
+
+  if ((start1))
+  {
+    last->next = (start1);
+  }
+  if (start2)
+  {
+    last->next = (start2);
+  }
+  printElements(start);
+}
+
 int main()
 {
 
@@ -419,7 +484,9 @@ int main()
     printf("\n 11. checkSorted");
     printf("\n 12. checkLoop");
     printf("\n 13. duplicateNode");
-    printf("\n 14. Exit\n");
+    printf("\n 14. appendList");
+    printf("\n 15. MergSortList");
+    printf("\n 16. Exit\n");
     printf("Enter you option: ");
     scanf("%d", &ch);
 
@@ -464,6 +531,12 @@ int main()
       deleteDuplicate(selectedList);
       break;
     case 14:
+      appendList(list1, list2);
+      break;
+    case 15:
+      mergeSortList(list1, list2);
+      break;
+    case 16:
       return 0;
       break;
 
