@@ -215,6 +215,28 @@ void reverseList(struct node **headNode)
   *headNode = lastNode;
 };
 
+void reverseListBeforeEnd(struct node **headNode)
+{
+
+  struct node *currentNode = *headNode;
+  struct node *nextNode;
+  struct node *lastNode = *headNode;
+  while (lastNode->next != NULL)
+  {
+    lastNode = lastNode->next;
+  }
+
+  do
+  {
+
+    nextNode = currentNode->next;
+    currentNode->next = lastNode;
+    lastNode = currentNode;
+    currentNode = nextNode;
+  } while (currentNode->next != NULL);
+  *headNode = lastNode;
+};
+
 void deleteNodeByAge(struct node **headNode)
 {
   if (*headNode == NULL)
@@ -367,6 +389,7 @@ void deleteDuplicate(struct node **headNode)
   else
   {
     struct node *temp, *temp1, *beforeTemp1;
+    struct node *toDeleteDuplicate = NULL;
     temp = *headNode;
 
     while (temp != NULL)
@@ -378,20 +401,76 @@ void deleteDuplicate(struct node **headNode)
         {
           printf("temp is :%d, temp1 is :%d", temp->age, temp1->age);
           beforeTemp1->next = temp1->next;
-          free(temp1);
-          temp1 = NULL;
-          return;
+          toDeleteDuplicate = temp1;
+          temp1 = temp1->next;
+          break;
         }
         beforeTemp1 = temp1;
         temp1 = temp1->next;
       }
+
       temp = temp->next;
     }
-
-    // beforeTemp1->next = temp1->next;
-    // free(temp1);
-    // temp1 = NULL;
   }
+}
+void deleteDuplicateLastOcurence(struct node **headNode)
+{
+  if (*headNode == NULL)
+  {
+    printf("List is Empty");
+    return;
+  }
+
+  if ((*headNode)->next == NULL)
+  {
+    printf("No Duplicate Node");
+    return;
+  }
+
+  struct node *temp, *temp1, *beforeTemp1;
+  struct node *toDeleteDuplicate = NULL;
+  temp = *headNode;
+
+  while (temp != NULL)
+  {
+    if (temp->next != NULL)
+    {
+      temp1 = temp->next;
+    }
+    else
+    {
+      return;
+    }
+
+    while (temp1 != NULL)
+    {
+      if (temp1->age == temp->age && temp1->age != temp1->next->age)
+      {
+        printf("temp is :%d, temp1 is :%d\n", temp->age, temp1->age);
+        beforeTemp1->next = temp1->next;
+        toDeleteDuplicate = temp1;
+        temp1 = temp1->next;
+        break;
+      }
+      else
+      {
+        beforeTemp1 = temp1;
+        temp1 = temp1->next;
+      }
+    }
+    if (toDeleteDuplicate != NULL)
+    {
+      free(toDeleteDuplicate);
+      toDeleteDuplicate = NULL;
+      temp = temp1;
+    }
+    else
+    {
+
+      temp = temp->next;
+    }
+  }
+  return;
 }
 
 void appendList(struct node *list1, struct node *list2)
@@ -486,7 +565,9 @@ int main()
     printf("\n 13. duplicateNode");
     printf("\n 14. appendList");
     printf("\n 15. MergSortList");
-    printf("\n 16. Exit\n");
+    printf("\n 16. deleteDuplicateLastOcurence");
+    printf("\n 17. reverseListBeforeEnd");
+    printf("\n 18. Exit\n");
     printf("Enter you option: ");
     scanf("%d", &ch);
 
@@ -537,6 +618,13 @@ int main()
       mergeSortList(list1, list2);
       break;
     case 16:
+      deleteDuplicateLastOcurence(selectedList);
+      break;
+    case 17:
+      reverseListBeforeEnd(selectedList);
+      // reverseListBeforeEnd();
+      break;
+    case 18:
       return 0;
       break;
 
