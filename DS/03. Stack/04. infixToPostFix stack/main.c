@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 char inFix[30] = "(x-y)/(z+p)*q-r";
+// char inFix[30] = "a+b/(c*d)*(e+f*g)+h";
 char postFix[30];
 struct stack
 {
@@ -41,11 +42,11 @@ char pop()
   {
     printf("Stack is empty\n");
   }
-  else if (top->next == NULL)
-  {
-    free(top);
-    top = NULL;
-  }
+  // else if (top->next == NULL)
+  // {
+  //   free(top);
+  //   top = NULL;
+  // }
   else
   {
     struct stack *temp = top;
@@ -91,17 +92,11 @@ int checkOperand(char ch)
 int checkPriority(char ch)
 {
   if (ch == '+' || ch == '-')
-  {
     return 1;
-  }
   else if (ch == '*' || ch == '/')
-  {
     return 2;
-  }
   else
-  {
     return -1;
-  }
 }
 
 void inFixToPostFix()
@@ -119,33 +114,29 @@ void inFixToPostFix()
     }
     else if (inFix[i] == ')')
     {
-      while ( peek() != '(')
+      while (peek() != '(')
         postFix[j++] = pop();
       pop();
     }
     else
     {
       while (top != NULL && checkPriority(inFix[i]) <= checkPriority(peek()))
-      {
         postFix[j++] = pop();
-      }
       push(inFix[i]);
     }
   }
 
   while (top != NULL)
-  {
     postFix[j++] = pop();
-  }
   // postFix[j] = '\0';
 }
 
 int main()
 {
+  int i;
   inFixToPostFix();
-  for (int i = 0; postFix[i]; i++)
-  {
+  for (i = 0; postFix[i]; i++)
     printf("%c ", postFix[i]);
-  }
+
   return 0;
 }
