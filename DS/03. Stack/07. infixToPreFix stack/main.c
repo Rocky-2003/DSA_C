@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-char inFix[30] = "x+y^z*p/q^r^s";
+// char inFix[30] = "x+y^z*p/q^r^s";
 // char inFix[30] = "(x-y)/(z+p)*q-r";
-// char inFix[30] = "a+b/(c*d)*(e+f*g)+h";
-char postFix[30];
+char inFix[30] = "a+b/(c*d)*(e+f*g)+h";
+char preFix[30];
 struct stack
 {
   char data;
@@ -41,7 +42,8 @@ char pop()
   char data;
   if (top == NULL)
   {
-    printf("Stack is empty\n");
+    return 0;
+    printf("Stack is empty----------\n");
   }
   // else if (top->next == NULL)
   // {
@@ -63,7 +65,7 @@ void display()
 {
   if (top == NULL)
   {
-    printf("Stack is Empty\n");
+    printf("Stack is Empt=--\n");
   }
   else
   {
@@ -82,75 +84,94 @@ char peek()
   // printf("Data is: %d\n", top->data);
   return top ? top->data : '\0';
 }
-
 int checkOperand(char ch)
 {
   if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9'))
+  {
+
     return 1;
+  }
+
   return 0;
 }
 
 int checkPriority(char ch)
 {
   if (ch == '+' || ch == '-')
+  {
     return 1;
+  }
   else if (ch == '*' || ch == '/')
+  {
     return 2;
-  else if (ch == '^')
-    return 3;
+  }
   else
+  {
     return -1;
+  }
 }
 
-void inFixToPostFix()
+void reverseString(char *str)
+{
+  int i;
+  unsigned long l = strlen(str);
+  char ch;
+  for (i = 0; i < l / 2; i++)
+  {
+    ch = str[i];
+    str[i] = str[l - i - 1];
+    str[l - i - 1] = ch;
+  }
+  // printf("%s", str);
+}
+
+void infixToPreFix()
 {
   int i, j = 0;
+  reverseString(inFix);
+  // printf("%s", inFix);
   for (i = 0; inFix[i]; i++)
   {
+    printf("for Loop\n");
     if (checkOperand(inFix[i]))
     {
-      postFix[j++] = inFix[i];
-    }
-    else if (inFix[i] == '(')
-    {
-      push(inFix[i]);
+      preFix[j++] = inFix[i];
+      printf("Oprand\n");
     }
     else if (inFix[i] == ')')
     {
-      while (peek() != '(')
-        postFix[j++] = pop();
+      push(inFix[i]);
+      printf("close bracket\n");
+    }
+    else if (inFix[i] == '(')
+    {
+      while (peek() != ')')
+      {
+        preFix[j++] = pop();
+      }
       pop();
+      printf("open bracket\n");
     }
     else
     {
-      if (checkPriority(inFix[i]) <= checkPriority(peek()) && peek() == '^' && inFix[i] == '^')
+      while (top != NULL && checkPriority(inFix[i]) < checkPriority(peek()))
       {
-
-        push(inFix[i]);
+        preFix[j++] = pop();
       }
-      else
-      {
-        while (top != NULL && checkPriority(inFix[i]) <= checkPriority(peek()))
-        {
-
-          postFix[j++] = pop();
-        }
-        push(inFix[i]);
-      }
+      push(inFix[i]);
+      printf(" opreator\n");
     }
   }
 
   while (top != NULL)
-    postFix[j++] = pop();
-  // postFix[j] = '\0';
+    preFix[j++] = pop();
+  printf(" end\n");
 }
 
 int main()
 {
-  int i;
-  inFixToPostFix();
-  for (i = 0; postFix[i]; i++)
-    printf("%c ", postFix[i]);
-
+  infixToPreFix();
+  reverseString(preFix);
+  printf("%s", preFix);
   return 0;
 }
