@@ -65,7 +65,7 @@ void addLast()
     else
     {
       struct Node *temp = headNode;
-      while (temp->next != NULL)
+      while ( temp->next != NULL)
       {
         temp = temp->next;
       }
