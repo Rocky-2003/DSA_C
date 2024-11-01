@@ -16,7 +16,7 @@ void main(){
   }
 
 
- ;
+ 
   printf("Enter Elements\n");
   for ( i = 0; i < n; i++){
     // arr[i] = i;

@@ -51,7 +51,7 @@ void addLast(struct node **headNode)
     struct node *n = addElement(age);
     if (*headNode == NULL)
     {
-      n->next = *headNode;
+      // n->next = *headNode;
       *headNode = n;
     }
     else
